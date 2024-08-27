@@ -4,7 +4,7 @@ body {
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
-    color: black; 
+    color: white; 
     margin: 0;
     padding: 0;
 }
@@ -24,7 +24,7 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #333;
+    color: white;
     display: block;
 }
 
