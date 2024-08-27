@@ -1,4 +1,4 @@
-body {
+html, body {
     font-family: Arial, sans-serif;
     background-image: url('background.jpeg'); 
     background-size: cover; 
