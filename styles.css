@@ -1,28 +1,30 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-image: url('background.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: #ffffff;
+    background-image: url('background.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    color: #ffffff; 
+    margin: 0;
+    padding: 0;
 }
 
 header {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: black;
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white;
     padding: 10px 0;
     text-align: center;
 }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
 nav ul li {
     padding: 10px;
-    background-color: rgba(221, 221, 221, 0.8);
+    background-color: rgba(221, 221, 221, 0.8); 
     margin-bottom: 5px;
 }
 
