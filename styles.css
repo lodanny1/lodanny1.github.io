@@ -1,11 +1,14 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #4a4949;
+    background-image: url('background.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    color: #ffffff; 
 }
 
 header {
-    background-color: #000025; 
+    background-color: rgba(0, 0, 0, 0.2);
     color: white;
     padding: 10px 0;
     text-align: center;
