@@ -1,11 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #red;
+    background-color: #f4f4f4; /* Adjusted */
     color: #ffffff;
 }
 
 header {
-    background-color: #00000025;
+    background-color: #000000; /* Removed transparency for simplicity */
     color: white;
     padding: 10px 0;
     text-align: center;
