@@ -1,11 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #f4f4f42f;
+    color: #ffffff;
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: #00000025;
     color: white;
     padding: 10px 0;
     text-align: center;
@@ -29,6 +29,6 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background-color: #4CAF50;
+    background-color: #f40000;
     color: white;
 }
