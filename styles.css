@@ -10,14 +10,14 @@ body {
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
-    color: #ffffff; 
+    color: black; 
     margin: 0;
     padding: 0;
 }
 
 header {
     background-color: rgba(0, 0, 0, 0.5); 
-    color: white;
+    color: black;
     padding: 10px 0;
     text-align: center;
 }
@@ -36,5 +36,5 @@ nav ul li a {
 
 nav ul li a:hover {
     background-color: #f40000;
-    color: white;
+    color: black;
 }
