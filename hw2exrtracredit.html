@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Extra Credit - Currency Conversion">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Credit - Currency Conversion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Extra Credit - Currency Conversion</h1>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Currency</th>
+                    <th>Rate</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Euro</td>
+                    <td>0.92</td>
+                    <td><input type="text" id="euro" readonly></td>
+                </tr>
+                <tr>
+                    <td>Canadian Dollar</td>
+                    <td>1.38</td>
+                    <td><input type="text" id="cad" readonly></td>
+                </tr>
+                <tr>
+                    <td>Hong Kong Dollar</td>
+                    <td>7.81</td>
+                    <td><input type="text" id="hkd" readonly></td>
+                </tr>
+                <tr>
+                    <td>Japanese Yen</td>
+                    <td>156.73</td>
+                    <td><input type="text" id="yen" readonly></td>
+                </tr>
+                <tr>
+                    <td>Mexican Peso</td>
+                    <td>18.41</td>
+                    <td><input type="text" id="peso" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <label for="usd">Enter Amount of U.S. Dollars:</label>
+        <input type="number" id="usd" oninput="convertCurrency()" placeholder="Enter USD"><br>
+
+        <p><a href="hw2.html">Back to Homework 2</a></p>
+    </main>
+
+    <script>
+        function convertCurrency() {
+            var usd = parseFloat(document.getElementById('usd').value);
+            if (isNaN(usd)) {
+                document.getElementById('euro').value = '';
+                document.getElementById('cad').value = '';
+                document.getElementById('hkd').value = '';
+                document.getElementById('yen').value = '';
+                document.getElementById('peso').value = '';
+                return;
+            }
+
+            document.getElementById('euro').value = (usd * 0.92).toFixed(2);
+            document.getElementById('cad').value = (usd * 1.38).toFixed(2);
+            document.getElementById('hkd').value = (usd * 7.81).toFixed(2);
+            document.getElementById('yen').value = (usd * 156.73).toFixed(2);
+            document.getElementById('peso').value = (usd * 18.41).toFixed(2);
+        }
+    </script>
+</body>
+</html>
