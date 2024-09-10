@@ -32,3 +32,37 @@ nav ul li a:hover {
     background-color: #f40000;
     color: white;
 }
+
+section {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid white;
+    padding: 8px;
+    text-align: left;
+}
+
+table input[type="text"] {
+    text-align: right;
+    color: black;
+}
+
+input[type="number"]:focus {
+    background-color: yellow;
+}
+
+a {
+    color: red; 
+}
+
+a:hover {
+    color: white;
+    background-color: #f40000; 
+}
