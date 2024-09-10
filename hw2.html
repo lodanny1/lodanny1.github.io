@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="JavaScript Homework 2 - Basic Operations">
+    <meta name="description" content="JavaScript Homework 2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Homework 2</title>
     <link rel="stylesheet" href="styles.css">
@@ -13,96 +13,8 @@
     </header>
 
     <main>
-        <section>
-            <h2>Part 1: Display Characters and Numbers</h2>
-            <p id="display"></p>
-            <script>
-                document.getElementById('display').innerHTML = `
-                    <strong style="font-family: 'Times New Roman'; color: red;">xy</strong> 
-                    <span style="color: blue; font-family: Arial;">12</span> 
-                    <em style="color: green; font-family: Impact;">89</em>`;
-            </script>
-            <p><a href="#part2">Go to Part 2</a></p>
-        </section>
-
-        <section id="part2">
-            <h2>Part 2: Calculations</h2>
-            <form id="calcForm">
-                <label>Number 1: <input type="number" id="num1"></label><br>
-                <label>Number 2: <input type="number" id="num2"></label><br>
-                <label>Number 3: <input type="number" id="num3"></label><br>
-                <button type="button" onclick="processNumbers()">Process</button>
-                <button type="button" onclick="clearForm()">Clear</button>
-            </form>
-            <div id="result"></div>
-            
-            <script>
-                function processNumbers() {
-                    let num1 = parseFloat(document.getElementById('num1').value);
-                    let num2 = parseFloat(document.getElementById('num2').value);
-                    let num3 = parseFloat(document.getElementById('num3').value);
-                    
-                    if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
-                        document.getElementById('result').innerHTML = 'Please enter valid numbers!';
-                        return;
-                    }
-                    
-                    let sum = num1 + num2 + num3;
-                    let avg = (sum / 3).toFixed(2);
-                    let product = num1 * num2 * num3;
-                    let smallest = Math.min(num1, num2, num3);
-                    let largest = Math.max(num1, num2, num3);
-                    
-                    document.getElementById('result').innerHTML = `
-                        Sum: ${sum}<br>
-                        Average: ${avg}<br>
-                        Product: ${product}<br>
-                        Smallest: ${smallest}<br>
-                        Largest: ${largest}`;
-                }
-                
-                function clearForm() {
-                    document.getElementById('calcForm').reset();
-                    document.getElementById('result').innerHTML = '';
-                }
-            </script>
-            <p><a href="#extraCredit">Go to Extra Credit</a></p>
-        </section>
-
-        <section id="extraCredit">
-            <h2>Extra Credit: Currency Exchange</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Currency</th>
-                        <th>Rate</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Euro</td><td>0.92</td><td><input type="text" id="euroValue" readonly></td></tr>
-                    <tr><td>Canadian Dollar</td><td>1.38</td><td><input type="text" id="cadValue" readonly></td></tr>
-                    <tr><td>Hong Kong Dollar</td><td>7.81</td><td><input type="text" id="hkdValue" readonly></td></tr>
-                    <tr><td>Japanese Yen</td><td>156.73</td><td><input type="text" id="jpyValue" readonly></td></tr>
-                    <tr><td>Mexican Peso</td><td>18.41</td><td><input type="text" id="mxnValue" readonly></td></tr>
-                </tbody>
-            </table>
-            <label>Enter Amount of U.S. Dollars: <input type="number" id="usd" oninput="convertCurrency()"></label>
-            
-            <script>
-                function convertCurrency() {
-                    let usd = parseFloat(document.getElementById('usd').value);
-                    if (isNaN(usd)) return;
-                    
-                    document.getElementById('euroValue').value = (usd * 0.92).toFixed(2);
-                    document.getElementById('cadValue').value = (usd * 1.38).toFixed(2);
-                    document.getElementById('hkdValue').value = (usd * 7.81).toFixed(2);
-                    document.getElementById('jpyValue').value = (usd * 156.73).toFixed(2);
-                    document.getElementById('mxnValue').value = (usd * 18.41).toFixed(2);
-                }
-            </script>
-        </section>
-
+        <p><a href="hwpart1.html">Part 1 - Display Letters and Numbers</a></p>
+        <p><a href="hwpart2.html">Part 2 - Calculate Sum, Average, and Product</a></p>
         <p><a href="index.html">Back to Assignments</a></p>
     </main>
 </body>
