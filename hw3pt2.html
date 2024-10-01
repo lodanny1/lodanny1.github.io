@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2 - Sales Commission</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="hw3pt2.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Sales Commission Calculator</h1>
+    </header>
+    
+    <table>
+        <tr>
+            <td>Seller's Name:</td>
+            <td><input type="text" id="sellerName" placeholder="Enter seller's name"></td>
+        </tr>
+        <tr>
+            <td colspan="2">For each item type the quantity sold by the seller:</td>
+        </tr>
+        <tr>
+            <td>Item 1:</td>
+            <td><input type="number" id="item1Qty" placeholder="Qty Sold" min="0"></td>
+        </tr>
+        <tr>
+            <td>Item 2:</td>
+            <td><input type="number" id="item2Qty" placeholder="Qty Sold" min="0"></td>
+        </tr>
+        <tr>
+            <td>Item 3:</td>
+            <td><input type="number" id="item3Qty" placeholder="Qty Sold" min="0"></td>
+        </tr>
+        <tr>
+            <td>Item 4:</td>
+            <td><input type="number" id="item4Qty" placeholder="Qty Sold" min="0"></td>
+        </tr>
+    </table>
+    
+    <button id="calculate">Submit</button>
+    <button id="clearForm">Clear Form</button>
+
+    <h2>Results</h2>
+    <table>
+        <tr>
+            <th>Item#</th>
+            <th>Price</th>
+            <th>Qty Sold</th>
+            <th>Total $</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>$20.99</td>
+            <td><input type="text" id="item1Sold" readonly></td> 
+            <td><input type="text" id="item1Total" readonly></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>$12.75</td>
+            <td><input type="text" id="item2Sold" readonly></td> 
+            <td><input type="text" id="item2Total" readonly></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>$9.95</td>
+            <td><input type="text" id="item3Sold" readonly></td> 
+            <td><input type="text" id="item3Total" readonly></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>$35.89</td>
+            <td><input type="text" id="item4Sold" readonly></td> 
+            <td><input type="text" id="item4Total" readonly></td>
+        </tr>
+    </table>
+
+    <h3>Total Amount Sold: <span id="totalSold"></span></h3>
+    <h3>Total Weekly Earnings: <span id="weeklyEarnings"></span></h3>
+    <a href="hw3.html">Back to Homework 3</a>
+</body>
+</html>

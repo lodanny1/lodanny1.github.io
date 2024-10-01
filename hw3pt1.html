@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1 - Student Grades</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="hw3pt1.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Student Grades</h1>
+    </header>
+    
+    <form id="gradesForm">
+        <table>
+            <tr>
+                <td><label for="hwAvg">Homework Average:</label></td>
+                <td><input type="number" id="hwAvg" min="0" max="100" required></td>
+            </tr>
+            <tr>
+                <td><label for="midExam">Mid-Term Exam Score:</label></td>
+                <td><input type="number" id="midExam" min="0" max="100" required></td>
+            </tr>
+            <tr>
+                <td><label for="finalExam">Final Exam Score:</label></td>
+                <td><input type="number" id="finalExam" min="0" max="100" required></td>
+            </tr>
+            <tr>
+                <td><label for="participation">Participation:</label></td>
+                <td><input type="number" id="participation" min="0" max="100" required></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit">Submit</button>
+                    <button type="button" id="clearBtn">Clear</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <div id="result"></div>
+    <a href="hw3.html">Back to Homework 3</a>
+</body>
+</html>
