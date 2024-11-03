@@ -11,26 +11,30 @@
         <h1>Part 2 - URL Navigation</h1>
     </header>
 
-    <label for="menu1">Choose a site (opens on change):</label>
-    <select id="menu1" onchange="openSite(this)">
-        <option value="">--Select--</option>
-        <option value="https://www.google.com/">Google</option>
-        <option value="https://www.youtube.com">Youtube</option>
-        <option value="https://github.com">GitHub</option>
-    </select>
+    <section class="dropdown-section">
+        <div class="dropdown-container">
+            <label for="menu1">Choose a site (opens on change):</label>
+            <select id="menu1" onchange="openSite(this)">
+                <option value="">--Select--</option>
+                <option value="https://www.google.com/">Google</option>
+                <option value="https://www.youtube.com">Youtube</option>
+                <option value="https://github.com">GitHub</option>
+            </select>
+        </div>
 
-    <label for="menu2">Choose a site (opens on click):</label>
-    <select id="menu2">
-        <option value="">--Select--</option>
-        <option value="https://www.google.com/">Google</option>
-        <option value="https://www.youtube.com">Youtube</option>
-        <option value="https://github.com">GitHub</option>
-    </select>
-    <button onclick="openSiteFromMenu2()">Go</button>
-
-    <br>
-    <a href="hw5.html">Back to Homework 5</a>
+        <div class="dropdown-container">
+            <label for="menu2">Choose a site (opens on click):</label>
+            <select id="menu2">
+                <option value="">--Select--</option>
+                <option value="https://www.google.com/">Google</option>
+                <option value="https://www.youtube.com">Youtube</option>
+                <option value="https://github.com">GitHub</option>
+            </select>
+            <button style="margin-left: 8px;" onclick="openSiteOnClick()">Go</button>
+        </div>
     </section>
+
+    <a href="hw5.html">Back to Homework 5</a>
 
     <script src="hw5pt2.js"></script>
 </body>
