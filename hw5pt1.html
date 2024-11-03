@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 5 - Part 1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Part 1 - User Information Form</h1>
+    </header>
+
+    <a href="hw5.html">Back to Homework 5</a>
+
+    <form id="userForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required><br>
+
+        <fieldset>
+            <legend>Age Group:</legend>
+            <input type="radio" id="under21" name="ageGroup" value="under21">
+            <label for="under21">Less than 21</label><br>
+            <input type="radio" id="between21and50" name="ageGroup" value="21-50">
+            <label for="between21and50">Between 21 and 50</label><br>
+            <input type="radio" id="over50" name="ageGroup" value="over50">
+            <label for="over50">Older than 50</label><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Browsers Used:</legend>
+            <input type="checkbox" id="firefox" name="browser" value="Firefox">
+            <label for="firefox">Firefox</label><br>
+            <input type="checkbox" id="edge" name="browser" value="Edge">
+            <label for="edge">Edge</label><br>
+            <input type="checkbox" id="chrome" name="browser" value="Chrome">
+            <label for="chrome">Chrome</label><br>
+            <input type="checkbox" id="safari" name="browser" value="Safari">
+            <label for="safari">Safari</label><br>
+        </fieldset>
+
+        <label for="movieGenre">Favorite Movie Genre:</label>
+        <select id="movieGenre" name="movieGenre" required>
+            <option value="">--Select--</option>
+            <option value="Action">Action</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Science Fiction">Science Fiction</option>
+        </select><br>
+
+        <button type="button" onclick="validateForm()">Submit</button>
+        <button type="reset" id="clearButton">Clear</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script src="hw5pt1.js"></script>
+</body>
+</html>
