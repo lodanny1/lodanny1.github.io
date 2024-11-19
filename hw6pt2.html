@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 6 - Part 2</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #output p {
+            margin: 5px 0;
+        }
+        #output strong {
+            color: white;
+        }
+        #charSearchForm label {
+            display: flex;
+            align-items: center; 
+            gap: 10px; 
+        }
+        textarea {
+            height: 100px; 
+            width: auto; 
+        }
+        #charInput {
+            width: 150px; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Part 2 - Character Search</h1>
+    </header>
+
+    <form id="charSearchForm">
+        <label for="textInput">
+            Enter text:
+            <textarea id="textInput" rows="5" required></textarea>
+        </label>
+        <br>
+
+        <label for="charInput">
+            Enter a character:
+            <input type="text" id="charInput" maxlength="1" required>
+        </label>
+        <br>
+
+        <button type="button" onclick="searchCharacter()">Submit</button>
+        <button type="reset" id="clearButton">Clear</button>
+    </form>
+
+    <div id="output"></div>
+
+    <a href="hw6.html">Back to Homework 6</a>
+
+    <script src="hw6pt2.js"></script>
+</body>
+</html>
