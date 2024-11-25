@@ -20,10 +20,18 @@
             align-items: center;
         }
 
-        label input {
+        label span {
             flex: 1;
-            margin-left: 10px;
+        }
+
+        label input {
+            flex: 2;
             padding: 5px;
+        }
+
+        input {
+            width: 100%; /* Ensures both input boxes are the same width */
+            box-sizing: border-box; /* Includes padding in width calculation */
         }
 
         button {
@@ -46,12 +54,12 @@
     <div id="content">
         <form id="userForm" style="display: none;">
             <label for="name">
-                Name:
+                <span>Name:</span>
                 <input type="text" id="name" required>
             </label>
 
             <label for="username">
-                Username:
+                <span>Username:</span>
                 <input type="text" id="username" required>
             </label>
 
