@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 7 - Part 2</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Part 2 - Cookies</h1>
+    </header>
+
+    <div id="content">
+        <form id="userForm" style="display: none;">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required><br><br>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" required><br><br>
+
+            <button type="button" onclick="saveCookies()">Save</button>
+        </form>
+    </div>
+
+    <a href="hw7.html">Back to Homework 7</a>
+
+    <script>
+        function saveCookies() {
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+
+            document.cookie = `name=${name}; path=/;`;
+            document.cookie = `username=${username}; path=/;`;
+
+            displayWelcomeMessage(name);
+        }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (const cookie of cookies) {
+                const [key, value] = cookie.split('=');
+                if (key === name) return value;
+            }
+            return null;
+        }
+
+        function displayWelcomeMessage(name) {
+            document.getElementById('content').innerHTML = `<p>Welcome Back, ${name}!</p>`;
+        }
+
+        window.onload = () => {
+            const name = getCookie('name');
+            if (name) {
+                displayWelcomeMessage(name);
+            } else {
+                document.getElementById('userForm').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>

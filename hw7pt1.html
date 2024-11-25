@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 7 - Part 1</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #styledArea {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 20px;
+            background-color: transparent; 
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Part 1 - Dynamic Styling</h1>
+    </header>
+
+    <main>
+        <div id="styledArea">
+            <p>"A computer is like a violin. You can imagine it making beautiful music, 
+                but you have to learn how to play it". - Bill Gates</p>
+            <p>"People think computers will keep them from making mistakes. They're 
+                wrong. With computers you make mistakes faster". Adam Osborne</p>
+            <p>"We've tended to forget that no computer will ever ask a new question".
+                 - Grace Hopper</p>
+        </div>
+
+        <form id="styleForm">
+            <fieldset>
+                <legend>Background Color:</legend>
+                <label><input type="radio" name="bgColor" value="black"> Black</label>
+                <label><input type="radio" name="bgColor" value="red"> Red</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Text Style:</legend>
+                <label><input type="checkbox" name="textStyle" value="bold"> Bold</label>
+                <label><input type="checkbox" name="textStyle" value="italic"> Italic</label>
+                <label><input type="checkbox" name="textStyle" value="underline"> Underline</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Font Size:</legend>
+                <select id="fontSize">
+                    <option value="1em">Default</option>
+                    <option value="1.5em">Large</option>
+                    <option value="2em">Extra Large</option>
+                </select>
+            </fieldset>
+        </form>
+
+        <a href="hw7.html">Back to Homework 7</a>
+    </main>
+
+    <script>
+        const styledArea = document.getElementById('styledArea');
+        const styleForm = document.getElementById('styleForm');
+
+        let currentStyles = {
+            fontWeight: '',
+            fontStyle: '',
+            textDecoration: '',
+        };
+
+        styleForm.addEventListener('change', (e) => {
+            const { name, value, checked } = e.target;
+
+            if (name === 'bgColor') {
+                styledArea.style.backgroundColor = value;
+            }
+
+            if (name === 'textStyle') {
+                if (value === 'bold') {
+                    currentStyles.fontWeight = checked ? 'bold' : '';
+                } else if (value === 'italic') {
+                    currentStyles.fontStyle = checked ? 'italic' : '';
+                } else if (value === 'underline') {
+                    currentStyles.textDecoration = checked ? 'underline' : '';
+                }
+
+                applyTextStyles();
+            }
+
+            if (e.target.id === 'fontSize') {
+                styledArea.style.fontSize = value;
+            }
+        });
+
+        function applyTextStyles() {
+            styledArea.style.fontWeight = currentStyles.fontWeight;
+            styledArea.style.fontStyle = currentStyles.fontStyle;
+            styledArea.style.textDecoration = currentStyles.textDecoration;
+        }
+    </script>
+</body>
+</html>
