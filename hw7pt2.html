@@ -30,10 +30,12 @@
             const name = document.getElementById('name').value;
             const username = document.getElementById('username').value;
 
-            document.cookie = `name=${name}; path=/;`;
-            document.cookie = `username=${username}; path=/;`;
+            if (name && username) {
+                document.cookie = `name=${name}; path=/;`;
+                document.cookie = `username=${username}; path=/;`;
 
-            displayWelcomeMessage(name);
+                document.getElementById('content').innerHTML = `<p>Name and Username saved.</p>`;
+            }
         }
 
         function getCookie(name) {
@@ -46,12 +48,14 @@
         }
 
         function displayWelcomeMessage(name) {
-            document.getElementById('content').innerHTML = `<p>Welcome Back, ${name}!</p>`;
+            document.getElementById('content').innerHTML = `<p>Hello, ${name}!</p>`;
         }
 
         window.onload = () => {
             const name = getCookie('name');
-            if (name) {
+            const username = getCookie('username');
+
+            if (name && username) {
                 displayWelcomeMessage(name);
             } else {
                 document.getElementById('userForm').style.display = 'block';
