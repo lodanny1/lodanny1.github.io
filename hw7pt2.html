@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homework 7 - Part 2</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label input {
+            flex: 1;
+            margin-left: 10px;
+            padding: 5px;
+        }
+
+        button {
+            width: 100px;
+            align-self: center;
+            padding: 5px;
+        }
+
+        #content p {
+            text-align: center;
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -13,11 +45,15 @@
 
     <div id="content">
         <form id="userForm" style="display: none;">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required><br><br>
+            <label for="name">
+                Name:
+                <input type="text" id="name" required>
+            </label>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" required><br><br>
+            <label for="username">
+                Username:
+                <input type="text" id="username" required>
+            </label>
 
             <button type="button" onclick="saveCookies()">Save</button>
         </form>
@@ -48,7 +84,7 @@
         }
 
         function displayWelcomeMessage(name) {
-            document.getElementById('content').innerHTML = `<p>Hello, ${name}!</p>`;
+            document.getElementById('content').innerHTML = `<p>Welcome back, ${name}!</p>`;
         }
 
         window.onload = () => {
