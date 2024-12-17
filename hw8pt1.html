@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 8 - AJAX Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+        }
+        h1, h2 {
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Homework 8 - AJAX Application</h1>
+
+    <button type="button" onclick="loadDoc()">Get CD Collection</button>
+    <br><br>
+    <table id="demo"></table>
+
+    <script>
+        function loadDoc() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                myFunction(this);
+            };
+            xhttp.open("GET", "hw8pt1.xml", true);
+            xhttp.send();
+        }
+
+        function myFunction(xml) {
+            const xmlDoc = xml.responseXML;
+            const cds = xmlDoc.getElementsByTagName("CD");
+
+            let table = "<tr><th>Artist</th><th>Title</th><th>Country</th><th>Company</th><th>Price</th><th>Year</th></tr>";
+
+            for (let i = 0; i < cds.length; i++) {
+                table += "<tr>" +
+                    "<td>" + cds[i].getElementsByTagName("ARTIST")[0].textContent + "</td>" +
+                    "<td>" + cds[i].getElementsByTagName("TITLE")[0].textContent + "</td>" +
+                    "<td>" + cds[i].getElementsByTagName("COUNTRY")[0].textContent + "</td>" +
+                    "<td>" + cds[i].getElementsByTagName("COMPANY")[0].textContent + "</td>" +
+                    "<td>" + cds[i].getElementsByTagName("PRICE")[0].textContent + "</td>" +
+                    "<td>" + cds[i].getElementsByTagName("YEAR")[0].textContent + "</td>" +
+                    "</tr>";
+            }
+
+            document.getElementById("demo").innerHTML = table;
+        }
+    </script>
+
+    <h2>Explanation of AJAX</h2>
+    <p>
+        This page uses AJAX to fetch the xml file without reloading the page. The XMLHttpRequest object is used to send a GET request to the server.
+        When the file is loaded, it triggers a function that parses the XML data.
+    </p>
+    <p>
+        The responseXML property allows the JavaScript code to access the XML content, then it displays all information such as: ARTIST, TITLE, COUNTRY, COMPANY, PRICE, and YEAR, and inserts it into an HTML table.
+    </p>
+
+    <h2>REST API</h2>
+    <p>
+        For this project, I chose the QRCode Monkey API, a rest api that generates customizable QR codes. The API accepts input in JSON format, which specifies the data, QR code design, and output format.
+    </p>
+    <p>
+        To use the API, an API key is required. It offers a free tier for basic usage, while advanced features like higher request limits and custom logos require a premium subscription.
+    </p>
+    <p>
+        You can access the API documentation here:  
+        <a href="https://www.qrcode-monkey.com/qr-code-api-with-logo" target="_blank">QRCode Monkey API Documentation</a>.
+    </p>
+
+    <p><a href="hw8.html">Back to Homework 8</a></p>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Credit - QR Code Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Extra Credit - QR Code Generator</h1>
+
+    <h2>QR Code Example</h2>
+    <p>This example generates a QR code linking back to my github assignments page.</p>
+    <div>
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <br>
+        <img id="qrcode" src="" >
+    </div>
+
+    <script>
+        function generateQRCode() {
+            const url = "https://api.qrserver.com/v1/create-qr-code/";
+            const data = "lodanny1.github.io";
+            const size = "200x200";
+            const qrCodeUrl = `${url}?data=${encodeURIComponent(data)}&size=${size}`;
+
+            document.getElementById("qrcode").src = qrCodeUrl;
+        }
+    </script>
+
+    <p><a href="hw8.html">Back to Homework 8</a></p>
+
+</body>
+</html>
