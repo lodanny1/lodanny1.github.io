@@ -1,10 +1,14 @@
 {
-    "fileLocations": [
-        {
-            "uri": "s3:::severless-proj-uploads-251985477703-us-west-1/analytics"
-        },
-    ],
-    "globalUploadSettings": {
-        "format": "CSV",
-    }
+  "fileLocations": [
+    { "URIs": [
+      "s3://severless-proj-uploads/analytics/projects-summary-2025-08-01.csv",
+      "s3://severless-proj-uploads/analytics/projectA-acme-monthly.csv"
+    ]}
+  ],
+  "globalUploadSettings": {
+    "format": "CSV",
+    "containsHeader": "true",
+    "delimiter": ",",
+    "textqualifier": "\""
+  }
 }
