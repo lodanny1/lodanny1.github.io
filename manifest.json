@@ -1,14 +1,13 @@
-
-    {
-        "fileLocations": [
-            {
-                "uri": "s3:::severless-proj-uploads-251985477703-us-west-1"
-            },
-        ],
-        "globalUploadSettings": {
-            "format": "CSV",
-            “containsHeader: “true”,
-            “delimiter”: “,”,
-            “text qualifier”: “\””
-        }
+{
+    "fileLocations": [
+        {
+            "uri": "s3:::severless-proj-uploads-251985477703-us-west-1"
+        },
+    ],
+    "globalUploadSettings": {
+        "format": "CSV",
+        “containsHeader": “true”,
+        “delimiter”: “,”,
+        “text qualifier”: “\””
     }
+}
