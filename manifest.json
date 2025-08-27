@@ -6,8 +6,5 @@
     ],
     "globalUploadSettings": {
         "format": "CSV",
-        “containsHeader": “true”,
-        “delimiter”: “,”,
-        “text qualifier”: “\””
     }
 }
