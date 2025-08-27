@@ -1,7 +1,7 @@
 {
   "fileLocations": [
     { "URIs": [
-      "s3://severless-proj-uploads-251985477703-us-west-1\",
+      "s3://severless-proj-uploads-251985477703-us-west-1/",
     ]}
   ],
   "globalUploadSettings": {
