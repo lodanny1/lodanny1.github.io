@@ -1,0 +1,11 @@
+Date,CustomerId,ProjectId,Phase,CostCategory,Item,Qty,Unit,UnitCost,TotalCost,Budget,Notes
+8/1/25,cust-demo,proj-204,Demolition,Labor,Demo crew (2),16,hours,45,720,7280,Remove partitions
+8/2/25,cust-demo,proj-204,Framing,Materials,Metal studs,120,ea,3.1,372,6908,
+8/3/25,cust-demo,proj-204,Framing,Labor,Carpenters (2),24,hours,55,1320,5588,New walls
+8/4/25,cust-demo,proj-204,Electrical,Materials,Receptacles & wire,1,lot,450,450,5138,
+8/5/25,cust-demo,proj-204,Electrical,Labor,Electrician,12,hours,70,840,4298,Circuits & outlets
+8/6/25,cust-demo,proj-204,Finishes,Materials,LVP flooring,900,sqft,2.4,2160,2138,
+8/7/25,cust-demo,proj-204,Finishes,Labor,Floor install crew,20,hours,52,1040,1098,
+8/8/25,cust-demo,proj-204,Painting,Materials,Paint & supplies,1,lot,300,300,798,
+8/9/25,cust-demo,proj-204,Painting,Labor,Painter,16,hours,48,768,30,
+8/10/25,cust-demo,proj-204,HVAC,Labor,Tech (diffuser moves),8,hours,75,600,-570,
