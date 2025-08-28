@@ -1,12 +1,23 @@
 {
   "CORSRules": [
     {
-      "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
+      "AllowedOrigins": [
+        "https://main.d28wvz3bs3pz1c.amplifyapp.com"
+      ],
       "AllowedMethods": ["PUT", "GET", "HEAD"],
       "AllowedHeaders": ["*"],
       "ExposeHeaders": ["ETag"],
       "MaxAgeSeconds": 3000
     }
-    /* , { "AllowedOrigins": ["http://localhost:5173"], "AllowedMethods": ["PUT","GET","HEAD"], "AllowedHeaders":["*"], "ExposeHeaders":["ETag"], "MaxAgeSeconds":3000 } */
+    /* Optional local dev:
+    ,{
+      "AllowedOrigins": ["http://localhost:5173"],
+      "AllowedMethods": ["PUT","GET","HEAD"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["ETag"],
+      "MaxAgeSeconds": 3000
+    }
+    */
   ]
 }
+
