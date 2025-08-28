@@ -3,9 +3,10 @@ https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
 [
   {
-    "source": "</^((?!\\.).)*$/>",
+    "source": "</^[^.]+$/>",
     "target": "/index.html",
     "status": 200,
     "condition": null
   }
 ]
+
