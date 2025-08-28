@@ -1,12 +1,21 @@
 https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
 
-[
-  {
-    "source": "</^[^.]+$/>",
-    "target": "/index.html",
-    "status": 200,
-    "condition": null
-  }
-]
-
+equest URL
+https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list
+Referrer Policy
+strict-origin-when-cross-origin
+authorization
+Bearer eyJraWQiOiJja2NzeWswTyt0c0hvVmR0V2lzbXpHOFNabzB3akNcL0NraXBQOW1tU0R6ST0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkOTc5Mzk0ZS1jMDAxLTcwYzYtYzE5Zi1iZTY3ZTg4ZjRhNjciLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0xLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMV9udkVvQVRmTGciLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiI0NDlpb2RoMmh1a3ZjdGVqOXZ1dXBma212Iiwib3JpZ2luX2p0aSI6ImUxYWM1MThlLTZiYzEtNDEyOS05YTU2LWY4OTg2MDdiNDYxZiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhdXRoX3RpbWUiOjE3NTYzNTM3NDgsImV4cCI6MTc1NjM1NzM0OCwiaWF0IjoxNzU2MzUzNzQ4LCJqdGkiOiJiY2U3NGUzYi0wZTc5LTRhN2EtOGY3NS0xYmM4MGUwZTA3MTgiLCJ1c2VybmFtZSI6ImQ5NzkzOTRlLWMwMDEtNzBjNi1jMTlmLWJlNjdlODhmNGE2NyJ9.Gof4cLmzB1zBwqCTyljGhLBU9qtzjskpdExDGnaovErMyLseJXALubkj-DYNjRmqRM7itF6vqxnUkaOheNlOUokhj9r3r_ZcnL9Ga-WIw5tc7pYigrl_q_Ou4ZJmSiHumE6XiI9VDkQc-es2_DG047jdW6oqroc6-RAXPjSuJ3EjrnJWk1JKDGWQ5o9Pnf5YB7IMnH2otdpDBuljkl0oelNdMLsWBPVPWyand-2fuVaBwcbxUiiFnBCHaohsYHw7lKShADTAQxpBE9dDv9GJap_EwjKQ6j7UnX07nlsojlq6P_WVWOC4im27CXiUaZdV8yMnSVaqKFamDOcxqmXl2g
+content-type
+application/json
+referer
+https://main.d28wvz3bs3pz1c.amplifyapp.com/
+sec-ch-ua
+"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"macOS"
+user-agent
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
