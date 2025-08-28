@@ -1,42 +1,17 @@
 [
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "PUT",
-            "POST",
-            "DELETE"
-        ],
-        "AllowedOrigins": [
-            "http://www.example1.com"
-        ],
-        "ExposeHeaders": []
-    },
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "PUT",
-            "POST",
-            "DELETE"
-        ],
-        "AllowedOrigins": [
-            "http://www.example2.com"
-        ],
-        "ExposeHeaders": []
-    },
-    {
-        "AllowedHeaders": [],
-        "AllowedMethods": [
-            "GET"
-        ],
-        "AllowedOrigins": [
-            "*"
-        ],
-        "ExposeHeaders": []
-    }
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["PUT"],
+    "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
+    "ExposeHeaders": ["ETag"]
+  },
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["GET","HEAD"],
+    "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
+    "ExposeHeaders": ["ETag"]
+  }
 ]
+
 
 
