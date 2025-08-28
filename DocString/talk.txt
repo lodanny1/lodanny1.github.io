@@ -1,6 +1,19 @@
 https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
-Error: TypeError: Failed to execute 'fetch' on 'Window': Failed to parse URL from https://<your-api-id>.execute-api.us-west-1.amazonaws.com/files/list
+files/:1  GET https://main.d28wvz3bs3pz1c.amplifyapp.com/app/files/ 404 (Not Found)
+content_script.js:1 content script loaded f7e827a6-091b-46f9-b879-1f2b70a8b21c
+credentials.js:1 Injecting credentials patch
+index-Cmea9iTc.js:67  GET https://https//lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list net::ERR_NAME_NOT_RESOLVED
 
-
-
+accept
+*/*
+access-control-request-headers
+authorization,content-type
+access-control-request-method
+GET
+origin
+https://main.d28wvz3bs3pz1c.amplifyapp.com
+sec-fetch-mode
+cors
+user-agent
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
