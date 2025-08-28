@@ -1,74 +1,26 @@
-  # Lambda: POST /uploads/create (presigned PUT)
-  CreateUploadFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: !Sub ${AWS::StackName}-CreateUpload
-      Runtime: nodejs20.x
-      Architectures: [ arm64 ]
-      Handler: index.handler
-      Role: !GetAtt LambdaRole.Arn
-      Timeout: 10
-      Environment:
-        Variables:
-          BUCKET_NAME: !Ref BucketName
-          URL_EXPIRES_SEC: !Ref UrlExpiresSeconds
-          ORIGIN: !Ref AmplifyOrigin
-      Code:
-        ZipFile: |
-          const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-          const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-          const s3 = new S3Client({ region: process.env.AWS_REGION || "us-west-1" });
-          const BUCKET  = process.env.BUCKET_NAME;
-          const EXPIRES = Number(process.env.URL_EXPIRES_SEC || 900);
-          const ORIGIN  = process.env.ORIGIN || "*";
-          const allowed = new Set([ORIGIN, "http://localhost:5173"]);
-          function cors(event){
-            const h = (event && event.headers) || {};
-            const reqOrigin = h.origin || h.Origin;
-            const allow = allowed.has(reqOrigin) ? reqOrigin : ORIGIN;
-            return { "Content-Type":"application/json", "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Headers":"Authorization,Content-Type" };
-          }
-          exports.handler = async (event) => {
-            try{
-              const body = event.body ? JSON.parse(event.body) : {};
-              const key  = body && body.key;
-              const ct   = (body && body.contentType) || "application/octet-stream";
-              if (!key || typeof key !== "string") return { statusCode:400, headers:cors(event), body: JSON.stringify({ error:"Body must include { key }" }) };
-              const cmd = new PutObjectCommand({ Bucket: BUCKET, Key: key, ContentType: ct });
-              const url = await getSignedUrl(s3, cmd, { expiresIn: EXPIRES });
-              return { statusCode:200, headers:cors(event), body: JSON.stringify({ url, bucket: BUCKET, key, expiresIn: EXPIRES }) };
-            }catch(err){
-              console.error("CREATE_UPLOAD_ERROR:", err);
-              return { statusCode:500, headers:cors(event), body: JSON.stringify({ error:"Internal error", detail: String(err) }) };
-            }
-          };
-
-  CreateUploadIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId: !Ref HttpApi
-      IntegrationType: AWS_PROXY
-      IntegrationUri: !GetAtt CreateUploadFunction.Arn
-      PayloadFormatVersion: '2.0'
-
-  CreateUploadRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref HttpApi
-      RouteKey: "POST /uploads/create"
-      AuthorizationType: JWT
-      AuthorizerId: !Ref HttpApiAuthorizer
-      Target: !Sub integrations/${CreateUploadIntegration}
-
-  CreateUploadPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt CreateUploadFunction.Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
-
-
+<CORSConfiguration>
+  <CORSRule>
+    <AllowedOrigin>https://main.d28wvz3bs3pz1c.amplifyapp.com</AllowedOrigin>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+    <ExposeHeader>ETag</ExposeHeader>
+    <MaxAgeSeconds>3000</MaxAgeSeconds>
+  </CORSRule>
+  <!-- Optional: local dev -->
+  <!--
+  <CORSRule>
+    <AllowedOrigin>http://localhost:5173</AllowedOrigin>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+    <ExposeHeader>ETag</ExposeHeader>
+    <MaxAgeSeconds>3000</MaxAgeSeconds>
+  </CORSRule>
+  -->
+</CORSConfiguration>
 
 
 
