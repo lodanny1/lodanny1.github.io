@@ -1,55 +1,11 @@
-AWSTemplateFormatVersion: '2010-09-09'
-
-# ---------------- Stage ----------------
-HttpApiStage:
-Type: AWS::ApiGatewayV2::Stage
-Properties:
-StageName: !Ref StageName
-ApiId: !Ref HttpApi
-AutoDeploy: true
-
-# ---------------- Lambda invoke permissions ----------------
-FilesListPermission:
-Type: AWS::Lambda::Permission
-Properties:
-Action: lambda:InvokeFunction
-FunctionName: !GetAtt FilesListFunction.Arn
-Principal: apigateway.amazonaws.com
-SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
-
-CreateDownloadPermission:
-Type: AWS::Lambda::Permission
-Properties:
-Action: lambda:InvokeFunction
-FunctionName: !GetAtt CreateDownloadFunction.Arn
-Principal: apigateway.amazonaws.com
-SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
-
-CreateUploadPermission:
-Type: AWS::Lambda::Permission
-Properties:
-Action: lambda:InvokeFunction
-FunctionName: !GetAtt CreateUploadFunction.Arn
-Principal: apigateway.amazonaws.com
-SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
-
-MultipartPermission:
-Type: AWS::Lambda::Permission
-Properties:
-Action: lambda:InvokeFunction
-FunctionName: !GetAtt MultipartUploadFunction.Arn
-Principal: apigateway.amazonaws.com
-SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*
-
-Outputs:
-InvokeUrl:
-Description: Base invoke URL (set this as VITE_API_BASE, include /${StageName})
-Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}
-FilesListFunctionArn:
-Value: !GetAtt FilesListFunction.Arn
-CreateDownloadFunctionArn:
-Value: !GetAtt CreateDownloadFunction.Arn
-CreateUploadFunctionArn:
-Value: !GetAtt CreateUploadFunction.Arn
-MultipartUploadFunctionArn:
-Value: !GetAtt MultipartUploadFunction.Arn
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
+      "AllowedMethods": ["PUT", "GET", "HEAD"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["ETag"],
+      "MaxAgeSeconds": 3000
+    }
+  ]
+}
