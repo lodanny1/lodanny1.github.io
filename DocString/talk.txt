@@ -1,12 +1,13 @@
 https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
 
-// index.mjs (Node.js 20)
-import { DynamoDBClient, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+table name: Metadata-251985477703-us-west-1
+pk	sk	bucket	contentType	etag	key	processedAt	size	status
+FILE#severless-proj-uploads-251985477703-us-west-1/John_Doe_Contract.pdf	META#v1	severless-proj-uploads-251985477703-us-west-1	application/pdf	"""8c866f18819c55c9b89e674f48ef8792"""	John_Doe_Contract.pdf	2025-08-27T13:38:29.012607Z	38060	PROCESSED
+FILE#severless-proj-uploads-251985477703-us-west-1/analytics/John_Doe_Cost.csv	META#v1	severless-proj-uploads-251985477703-us-west-1	text/csv	"""ec48b383a3cdd1d8acdd84dddda6321e"""	analytics/John_Doe_Cost.csv	2025-08-27T23:24:12.180610Z	980	PROCESSED
+FILE#severless-proj-uploads-251985477703-us-west-1/analytics/	META#v1	severless-proj-uploads-251985477703-us-west-1	application/x-directory; charset=UTF-8	"""d41d8cd98f00b204e9800998ecf8427e"""	analytics/	2025-08-27T23:23:50.522781Z	0	PROCESSED
+FILE#severless-proj-uploads-251985477703-us-west-1/John_Doe_Plans.jpg	META#v1	severless-proj-uploads-251985477703-us-west-1	image/jpeg	"""740e45b0d8a3de62c4980a2585c5b8f3"""	John_Doe_Plans.jpg	2025-08-27T13:38:29.403691Z	97902	PROCESSED
+FILE#severless-proj-uploads-251985477703-us-west-1/John_Doe_Cost.csv	META#v1	severless-proj-uploads-251985477703-us-west-1	text/csv	"""ec48b383a3cdd1d8acdd84dddda6321e"""	John_Doe_Cost.csv	2025-08-27T13:38:29.124779Z	980	PROCESSED
 
-// === EDIT THESE to match your DynamoDB attribute names ===
-const PARTITION_KEY = 'projectId';     // your table's PK name (if you query by project)
-const ATTR_KEY      = 'fileKey';       // where the file key is stored in DDB
-const ATTR_PROJECT  = 'projectId';     // project id/name field in DDB
-const ATTR_CUSTOMER = 'customerName';  // customer field in DDB
+
 
