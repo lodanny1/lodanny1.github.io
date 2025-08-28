@@ -1,109 +1,116 @@
-30
-
-                                 ## No backend environment association found, continuing...
-
-31
 
                                  ## Completed Backend Build
 
 32
 
-2025-08-28T07:56:30.732Z [INFO]: {"backendDuration": 0}
+2025-08-28T08:04:09.602Z [INFO]: ## Starting Frontend Build
 
 33
 
-                                 ## Starting Frontend Build
+                                 # Starting phase: preBuild
 
 34
 
-                                 # Starting phase: preBuild
+2025-08-28T08:04:09.603Z [INFO]: # Executing command: node -v
 
 35
 
-                                 # Executing command: node -v
+2025-08-28T08:04:09.608Z [INFO]: v18.20.8
 
 36
 
-2025-08-28T07:56:30.739Z [INFO]: v18.20.8
+2025-08-28T08:04:09.609Z [INFO]: # Executing command: npm install --no-audit --no-fund
 
 37
 
-                                 # Executing command: npm install --no-audit --no-fund
+2025-08-28T08:04:24.847Z [INFO]: up to date in 12s
 
 38
 
-2025-08-28T07:56:45.242Z [INFO]: up to date in 11s
+2025-08-28T08:04:24.859Z [INFO]: # Completed phase: preBuild
 
 39
 
-2025-08-28T07:56:45.253Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
 
 40
 
-                                 # Starting phase: build
+                                 # Executing command: npm run build
 
 41
 
-                                 # Executing command: npm run build
+2025-08-28T08:04:24.976Z [INFO]: > serverless-metadata-ui@0.0.1 build
 
 42
 
-2025-08-28T07:56:45.371Z [INFO]: > serverless-metadata-ui@0.0.1 build
+                                 > vite build
 
 43
 
-                                 > vite build
+2025-08-28T08:04:25.545Z [INFO]: vite v5.4.19 building for production...
 
 44
 
-2025-08-28T07:56:46.109Z [INFO]: vite v5.4.19 building for production...
+2025-08-28T08:04:25.604Z [INFO]: transforming...
 
 45
 
-2025-08-28T07:56:46.174Z [INFO]: transforming...
+2025-08-28T08:04:25.744Z [INFO]: ✓ 9 modules transformed.
 
 46
 
-2025-08-28T07:56:46.365Z [INFO]: ✓ 9 modules transformed.
+2025-08-28T08:04:25.745Z [WARNING]: x Build failed in 176ms
 
 47
 
-2025-08-28T07:56:46.367Z [WARNING]: x Build failed in 229ms
+2025-08-28T08:04:25.745Z [WARNING]: error during build:
 
 48
 
-2025-08-28T07:56:46.367Z [WARNING]: error during build:
+                                    [vite:esbuild] Transform failed with 1 error:
 
 49
 
-                                    [vite:esbuild] Transform failed with 1 error:
+                                    /codebuild/output/src3999709825/src/serverless_proj_oidc/src/screens/Files.jsx:124:0: ERROR: Unexpected end of file
 
 50
 
-                                    /codebuild/output/src4100674608/src/serverless_proj_oidc/src/screens/Files.jsx:1:2: ERROR: Unexpected "}"
+                                    file: /codebuild/output/src3999709825/src/serverless_proj_oidc/src/screens/Files.jsx:124:0
 
 51
 
-                                    file: /codebuild/output/src4100674608/src/serverless_proj_oidc/src/screens/Files.jsx:1:2
+                                    Unexpected end of file
 
 52
 
-                                    Unexpected "}"
+                                    122|              try{
 
 53
 
-                                    1  |    }
+                                    123|                const { url } = await apiPost('/uploads/multipart/part-url', { key, uploadId, partNumber: pn }, token)
 
 54
 
-                                    |    ^
+                                    124|
 
 55
 
-                                    2  |    function closeUploader(){
+                                    |  ^
 
 56
 
-                                    3  |      setShowUploader(false)
+                                    at failureErrorWithLog (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:1472:15)
+
+57
+
+                                    at /codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:755:50
+
+58
+
+                                    at responseCallbacks.<computed> (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:622:9)
+
+59
+
+                                    at handleIncomingPacket (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:677:12)
 
 
