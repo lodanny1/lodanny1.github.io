@@ -1,11 +1,12 @@
-Access to fetch at 'https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list' from origin 'https://main.d28wvz3bs3pz1c.amplifyapp.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-index-DSL17mH5.js:67 
- GET https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list net::ERR_FAILED
-Sm	@	index-DSL17mH5.js:67
-f	@	index-DSL17mH5.js:67
-(anonymous)	@	index-DSL17mH5.js:67
-Bi	@	index-DSL17mH5.js:40
-wn	@	index-DSL17mH5.js:40
-(anonymous)	@	index-DSL17mH5.js:40
-w	@	index-DSL17mH5.js:25
-_e	@	index-DSL17mH5.js:25
+Ensure CORS response header values are valid
+A cross-origin resource sharing (CORS) request was blocked because of invalid or missing response headers of the request or the associated preflight request.
+
+To fix this issue, ensure the response to the CORS request and/or the associated preflight request are not missing headers and use valid header values.
+
+Note that if an opaque response is sufficient, the request's mode can be set to no-cors to fetch the resource with CORS disabled; that way CORS headers are not required but the response content is inaccessible (opaque).
+
+1 request
+Request	Status	Preflight Request (if problematic)	Header	Problem	Invalid Value (if available)
+
+list	blocked	
+list	Access-Control-Allow-Origin	Missing Header	
