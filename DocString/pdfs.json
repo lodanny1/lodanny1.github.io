@@ -1,116 +1,42 @@
-
-                                 ## Completed Backend Build
-
-32
-
-2025-08-28T08:04:09.602Z [INFO]: ## Starting Frontend Build
-
-33
-
-                                 # Starting phase: preBuild
-
-34
-
-2025-08-28T08:04:09.603Z [INFO]: # Executing command: node -v
-
-35
-
-2025-08-28T08:04:09.608Z [INFO]: v18.20.8
-
-36
-
-2025-08-28T08:04:09.609Z [INFO]: # Executing command: npm install --no-audit --no-fund
-
-37
-
-2025-08-28T08:04:24.847Z [INFO]: up to date in 12s
-
-38
-
-2025-08-28T08:04:24.859Z [INFO]: # Completed phase: preBuild
-
-39
-
-                                 # Starting phase: build
-
-40
-
-                                 # Executing command: npm run build
-
-41
-
-2025-08-28T08:04:24.976Z [INFO]: > serverless-metadata-ui@0.0.1 build
-
-42
-
-                                 > vite build
-
-43
-
-2025-08-28T08:04:25.545Z [INFO]: vite v5.4.19 building for production...
-
-44
-
-2025-08-28T08:04:25.604Z [INFO]: transforming...
-
-45
-
-2025-08-28T08:04:25.744Z [INFO]: ✓ 9 modules transformed.
-
-46
-
-2025-08-28T08:04:25.745Z [WARNING]: x Build failed in 176ms
-
-47
-
-2025-08-28T08:04:25.745Z [WARNING]: error during build:
-
-48
-
-                                    [vite:esbuild] Transform failed with 1 error:
-
-49
-
-                                    /codebuild/output/src3999709825/src/serverless_proj_oidc/src/screens/Files.jsx:124:0: ERROR: Unexpected end of file
-
-50
-
-                                    file: /codebuild/output/src3999709825/src/serverless_proj_oidc/src/screens/Files.jsx:124:0
-
-51
-
-                                    Unexpected end of file
-
-52
-
-                                    122|              try{
-
-53
-
-                                    123|                const { url } = await apiPost('/uploads/multipart/part-url', { key, uploadId, partNumber: pn }, token)
-
-54
-
-                                    124|
-
-55
-
-                                    |  ^
-
-56
-
-                                    at failureErrorWithLog (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:1472:15)
-
-57
-
-                                    at /codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:755:50
-
-58
-
-                                    at responseCallbacks.<computed> (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:622:9)
-
-59
-
-                                    at handleIncomingPacket (/codebuild/output/src3999709825/src/serverless_proj_oidc/node_modules/esbuild/lib/main.js:677:12)
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT",
+            "POST",
+            "DELETE"
+        ],
+        "AllowedOrigins": [
+            "http://www.example1.com"
+        ],
+        "ExposeHeaders": []
+    },
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "PUT",
+            "POST",
+            "DELETE"
+        ],
+        "AllowedOrigins": [
+            "http://www.example2.com"
+        ],
+        "ExposeHeaders": []
+    },
+    {
+        "AllowedHeaders": [],
+        "AllowedMethods": [
+            "GET"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
+    }
+]
 
 
