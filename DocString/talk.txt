@@ -1,6 +1,3 @@
-/downloads
-/create
-ANY
-/files
-/list
-GET
+Identity source
+When this authorizer is invoked, API Gateway will use this selection expression to determine the source of the token
+$request.header.Authorization
