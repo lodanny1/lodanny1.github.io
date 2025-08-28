@@ -1,0 +1,252 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Post-upload processing with Step Functions (Express) triggered by S3 via EventBridge.
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: severless-proj-uploads-251985477703-us-west-1
+  TableName:
+    Type: String
+    Default: Metadata-251985477703-us-west-1
+  StateMachineName:
+    Type: String
+    Default: PostUploadProcessor
+  LambdaRuntime:
+    Type: String
+    Default: nodejs20.x
+    AllowedValues: [nodejs18.x, nodejs20.x]
+
+Resources:
+  # -----------------------------
+  # IAM ROLES
+  # -----------------------------
+  StepFnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: states.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: InvokeLambdas
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource:
+                  - !GetAtt InitMetadataLambda.Arn
+                  - !GetAtt ExtractMetadataLambda.Arn
+                  - !GetAtt UpdateDynamoLambda.Arn
+
+  EventBridgeToStepFnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: events.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StartStateMachine
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: states:StartExecution
+                Resource: !GetAtt PostUploadStateMachine.Arn
+
+  LambdaExecRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DDBAndS3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Read object head/metadata
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:HeadObject
+                Resource:
+                  - !Sub arn:aws:s3:::${BucketName}/*
+              # Write/Update metadata row
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                Resource:
+                  - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TableName}
+
+  # -----------------------------
+  # LAMBDAS (INLINE CODE)
+  # -----------------------------
+  InitMetadataLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: !Ref LambdaRuntime
+      Handler: index.handler
+      Role: !GetAtt LambdaExecRole.Arn
+      Timeout: 10
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+      Code:
+        ZipFile: |
+          'use strict';
+          const AWS = require('aws-sdk');
+          const ddb = new AWS.DynamoDB.DocumentClient();
+          exports.handler = async (event) => {
+            const detail = event.detail || {};
+            const bucket = detail.bucket && detail.bucket.name;
+            const obj = detail.object || {};
+            const key = decodeURIComponent((obj.key || '').replace(/\+/g, ' '));
+            const size = obj.size;
+            const etag = obj.etag || obj.eTag || obj.ETag;
+            const contentType = obj.contentType || undefined;
+            if (!bucket || !key) return { statusCode: 400, body: 'Missing bucket/key in event' };
+            const pk = `FILE#${bucket}/${key}`;
+            const sk = 'META#v1';
+            const now = new Date().toISOString();
+            const item = { pk, sk, bucket, key, size, etag, contentType, status: 'RECEIVED', processedAt: now };
+            await ddb.put({ TableName: process.env.TABLE_NAME, Item: item }).promise();
+            return { ok: true, item };
+          };
+
+  ExtractMetadataLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: !Ref LambdaRuntime
+      Handler: index.handler
+      Role: !GetAtt LambdaExecRole.Arn
+      Timeout: 30
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref BucketName
+      Code:
+        ZipFile: |
+          'use strict';
+          const AWS = require('aws-sdk');
+          const s3  = new AWS.S3();
+          exports.handler = async (input) => {
+            const bucket = input.detail?.bucket?.name || process.env.BUCKET_NAME;
+            const key = input.detail?.object?.key;
+            if (!bucket || !key) return { ok: false, error: 'missing bucket/key' };
+            try {
+              const head = await s3.headObject({ Bucket: bucket, Key: key }).promise();
+              return { ok: true, bucket, key, contentType: head.ContentType, size: head.ContentLength };
+            } catch (e) {
+              return { ok: false, error: String(e), bucket, key };
+            }
+          };
+
+  UpdateDynamoLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: !Ref LambdaRuntime
+      Handler: index.handler
+      Role: !GetAtt LambdaExecRole.Arn
+      Timeout: 15
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+      Code:
+        ZipFile: |
+          'use strict';
+          const AWS = require('aws-sdk');
+          const ddb = new AWS.DynamoDB.DocumentClient();
+          exports.handler = async (input) => {
+            const bucket = input.detail?.bucket?.name;
+            const key    = input.detail?.object?.key;
+            if (!bucket || !key) return { ok: false, error: 'missing bucket/key' };
+            const pk = `FILE#${bucket}/${decodeURIComponent((key||'').replace(/\+/g, ' '))}`;
+            const sk = 'META#v1';
+            const now = new Date().toISOString();
+            await ddb.update({
+              TableName: process.env.TABLE_NAME,
+              Key: { pk, sk },
+              UpdateExpression: 'SET #st = :s, processedAt = :t',
+              ExpressionAttributeNames: { '#st': 'status' },
+              ExpressionAttributeValues: { ':s': 'PROCESSED', ':t': now }
+            }).promise();
+            return { ok: true, pk, sk, status: 'PROCESSED', processedAt: now };
+          };
+
+  # -----------------------------
+  # STEP FUNCTIONS (EXPRESS)
+  # -----------------------------
+  PostUploadStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Ref StateMachineName
+      StateMachineType: EXPRESS
+      RoleArn: !GetAtt StepFnRole.Arn
+      Definition:
+        Comment: Post-upload processing
+        StartAt: InitMetadata
+        States:
+          InitMetadata:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: !GetAtt InitMetadataLambda.Arn
+              Payload.$: $
+            ResultPath: $.init
+            Next: Extract
+          Extract:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: !GetAtt ExtractMetadataLambda.Arn
+              Payload.$: $
+            ResultPath: $.extract
+            Next: UpdateStatus
+          UpdateStatus:
+            Type: Task
+            Resource: arn:aws:states:::lambda:invoke
+            Parameters:
+              FunctionName: !GetAtt UpdateDynamoLambda.Arn
+              Payload.$: $
+            ResultPath: $.update
+            End: true
+
+  # -----------------------------
+  # EVENTBRIDGE RULE (S3 -> SFN)
+  # -----------------------------
+  S3CreateObjectRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Start Step Function when objects are created in the bucket
+      EventPattern:
+        source: [ "aws.s3" ]
+        detail-type: [ "Object Created" ]
+        detail:
+          bucket:
+            name: [ !Ref BucketName ]
+      Targets:
+        - Arn: !GetAtt PostUploadStateMachine.Arn
+          Id: StartPostUploadSFN
+          RoleArn: !GetAtt EventBridgeToStepFnRole.Arn
+
+Outputs:
+  StateMachineArn:
+    Value: !GetAtt PostUploadStateMachine.Arn
+    Description: ARN of the Step Functions Express workflow
+  InitLambdaArn:
+    Value: !GetAtt InitMetadataLambda.Arn
+  ExtractLambdaArn:
+    Value: !GetAtt ExtractMetadataLambda.Arn
+  UpdateLambdaArn:
+    Value: !GetAtt UpdateDynamoLambda.Arn
