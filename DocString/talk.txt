@@ -1,51 +1,83 @@
-Request URL
-https://7psypm9d3b.execute-api.us-west-1.amazonaws.com/prod/files/list
-Request Method
-GET
-Status Code
-500 Internal Server Error
-Remote Address
-54.183.247.255:443
-Referrer Policy
-strict-origin-when-cross-origin
-:authority
-7psypm9d3b.execute-api.us-west-1.amazonaws.com
-:method
-GET
-:path
-/prod/files/list
-:scheme
-https
-accept
-*/*
-accept-encoding
-gzip, deflate, br, zstd
-accept-language
-en-US,en;q=0.9
-authorization
-Bearer eyJraWQiOiJEXC9KOHFnRGt1eW93dzhDMkcyblpIUWhIeDQ1eTZrMnhURTVIUytPdWVlND0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiZHZRVGM4Z2gtOVBIN1NXUGZab1QxdyIsInN1YiI6ImQ5NzkzOTRlLWMwMDEtNzBjNi1jMTlmLWJlNjdlODhmNGE2NyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0xLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMV9udkVvQVRmTGciLCJjb2duaXRvOnVzZXJuYW1lIjoiZDk3OTM5NGUtYzAwMS03MGM2LWMxOWYtYmU2N2U4OGY0YTY3Iiwib3JpZ2luX2p0aSI6IjVkY2NjNDcxLTk1ZmMtNGRiZi1iYWVkLTI1MzY0YzQzODQyOSIsImF1ZCI6IjQ0OWlvZGgyaHVrdmN0ZWo5dnV1cGZrbXYiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTc1NjM2MDgzNSwiZXhwIjoxNzU2MzY0NDM1LCJpYXQiOjE3NTYzNjA4MzUsImp0aSI6ImI2ZGNhMjZkLTY3MmItNGEyYy04M2UwLTkxOTMxOGQ4Yjc3NCIsImVtYWlsIjoibG92ZGFubkBhbWF6b24uY29tIn0.fYhQtRc0RlOWDiF5qBI9ydEk0sYFId5IMtmPGV_baqPNbRWOnbTYg1JJlW4dA7LLAVUABmUnDUuwFlnVz0v-AYZwEfl1Bm_LWD_-FaMMSWYU3Wg4WFuWpS2Chv3kVHX1m9BlvvvBrXt6lDcegFptcj_J1WPyOhyRbaV2CdIcvljoah_iSBuhgq1Xi67nMHnqjAy_PcsRqPK0SQ-ni1gbc3Vnl2r6Yo5pmrCKqeyJj33r4cXCkCf2aqyjKdDiY2_2tvw-jGFhnqhDbEDo1DjuNZa9q8ptINt8RbUboSe6iwqLrcPBoH0cbV_oz2lLFqniEkQ2U9Xz_6tRiozjQDVdpQ
-content-type
-application/json
-origin
-https://main.d28wvz3bs3pz1c.amplifyapp.com
-priority
-u=1, i
-referer
-https://main.d28wvz3bs3pz1c.amplifyapp.com/
-sec-ch-ua
-"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile
-?0
-sec-ch-ua-platform
-"macOS"
-sec-fetch-dest
-empty
-sec-fetch-mode
-cors
-sec-fetch-site
-cross-site
-user-agent
-Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+// index.js (CommonJS, verbose errors)
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+
+const ORIGIN       = process.env.ORIGIN || "*";
+const TABLE        = process.env.TABLE_NAME;
+const BUCKET       = process.env.BUCKET_NAME;
+const allowedOrig  = new Set([ORIGIN, "http://localhost:5173"]);
+
+function cors(event) {
+  const h = (event && event.headers) || {};
+  const reqOrigin = h.origin || h.Origin;
+  const allow = allowedOrig.has(reqOrigin) ? reqOrigin : ORIGIN;
+  return {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": allow,
+    "Access-Control-Allow-Headers": "Authorization,Content-Type",
+  };
+}
+
+// Build regional client explicitly (safest)
+const ddb = DynamoDBDocumentClient.from(
+  new DynamoDBClient({ region: process.env.AWS_REGION || "us-west-1" }),
+  { marshallOptions: { removeUndefinedValues: true } }
+);
+
+exports.handler = async (event) => {
+  try {
+    // ---- Guard envs so we fail with a useful message
+    if (!TABLE) throw new Error("Missing env TABLE_NAME");
+    if (!BUCKET) throw new Error("Missing env BUCKET_NAME");
+
+    const qs = (event && event.queryStringParameters) || {};
+    const prefix = typeof qs.prefix === "string" ? qs.prefix : "";
+    const limit = Math.min(Number(qs.limit || 200), 500);
+
+    // DynamoDB call
+    let scanRes;
+    try {
+      scanRes = await ddb.send(new ScanCommand({ TableName: TABLE, Limit: limit }));
+    } catch (e) {
+      // Surface common DDB errors (ValidationException / AccessDenied)
+      throw new Error(`DynamoDB Scan failed: ${e.name || "Error"}: ${e.message}`);
+    }
+
+    const items = (scanRes.Items || [])
+      .filter(it => it.bucket === BUCKET)
+      .filter(it => typeof it.key === "string")
+      .filter(it => (prefix ? it.key.startsWith(prefix) : true))
+      .filter(it => (typeof it.contentType === "string" ? !it.contentType.includes("x-directory") : true))
+      .filter(it => (typeof it.size === "number" ? it.size > 0 : true))
+      .map(it => ({
+        key: it.key,
+        bucket: it.bucket,
+        size: typeof it.size === "number" ? it.size : null,
+        contentType: it.contentType || null,
+        status: it.status || null,
+        processedAt: it.processedAt || null,
+      }))
+      .sort((a, b) => String(b.processedAt || "").localeCompare(String(a.processedAt || "")));
+
+    return { statusCode: 200, headers: cors(event), body: JSON.stringify({ items }) };
+  } catch (err) {
+    console.error("FILES_LIST_ERROR:", err);
+    return {
+      statusCode: 500,
+      headers: cors(event),
+      body: JSON.stringify({
+        error: "FilesListFunctionError",
+        detail: String(err && err.message ? err.message : err),
+        env: {
+          region: process.env.AWS_REGION,
+          table: TABLE ? "set" : "MISSING",
+          bucket: BUCKET ? "set" : "MISSING",
+        },
+      }),
+    };
+  }
+};
+
 
 
 
