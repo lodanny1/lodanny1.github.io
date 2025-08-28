@@ -1,12 +1,9 @@
-https://main.d28wvz3bs3pz1c.amplifyapp.com/
-
-
-equest URL
+uest URL
 https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list
 Referrer Policy
 strict-origin-when-cross-origin
 authorization
-Bearer eyJraWQiOiJja2NzeWswTyt0c0hvVmR0V2lzbXpHOFNabzB3akNcL0NraXBQOW1tU0R6ST0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkOTc5Mzk0ZS1jMDAxLTcwYzYtYzE5Zi1iZTY3ZTg4ZjRhNjciLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0xLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMV9udkVvQVRmTGciLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiI0NDlpb2RoMmh1a3ZjdGVqOXZ1dXBma212Iiwib3JpZ2luX2p0aSI6ImUxYWM1MThlLTZiYzEtNDEyOS05YTU2LWY4OTg2MDdiNDYxZiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJhdXRoX3RpbWUiOjE3NTYzNTM3NDgsImV4cCI6MTc1NjM1NzM0OCwiaWF0IjoxNzU2MzUzNzQ4LCJqdGkiOiJiY2U3NGUzYi0wZTc5LTRhN2EtOGY3NS0xYmM4MGUwZTA3MTgiLCJ1c2VybmFtZSI6ImQ5NzkzOTRlLWMwMDEtNzBjNi1jMTlmLWJlNjdlODhmNGE2NyJ9.Gof4cLmzB1zBwqCTyljGhLBU9qtzjskpdExDGnaovErMyLseJXALubkj-DYNjRmqRM7itF6vqxnUkaOheNlOUokhj9r3r_ZcnL9Ga-WIw5tc7pYigrl_q_Ou4ZJmSiHumE6XiI9VDkQc-es2_DG047jdW6oqroc6-RAXPjSuJ3EjrnJWk1JKDGWQ5o9Pnf5YB7IMnH2otdpDBuljkl0oelNdMLsWBPVPWyand-2fuVaBwcbxUiiFnBCHaohsYHw7lKShADTAQxpBE9dDv9GJap_EwjKQ6j7UnX07nlsojlq6P_WVWOC4im27CXiUaZdV8yMnSVaqKFamDOcxqmXl2g
+Bearer eyJraWQiOiJEXC9KOHFnRGt1eW93dzhDMkcyblpIUWhIeDQ1eTZrMnhURTVIUytPdWVlND0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiZnRkMTFfZFdoblhYWlFjUVpwSnVpdyIsInN1YiI6ImQ5NzkzOTRlLWMwMDEtNzBjNi1jMTlmLWJlNjdlODhmNGE2NyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0xLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMV9udkVvQVRmTGciLCJjb2duaXRvOnVzZXJuYW1lIjoiZDk3OTM5NGUtYzAwMS03MGM2LWMxOWYtYmU2N2U4OGY0YTY3Iiwib3JpZ2luX2p0aSI6IjNjMmNjYjYxLWEyMTAtNDE4Ni1iNjg4LWRjMGE1N2I4NGRjZiIsImF1ZCI6IjQ0OWlvZGgyaHVrdmN0ZWo5dnV1cGZrbXYiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTc1NjM1NDI5NSwiZXhwIjoxNzU2MzU3ODk1LCJpYXQiOjE3NTYzNTQyOTUsImp0aSI6ImFjNzNjMTlmLTU0MDktNGViYS1iNDM0LWFlMjVmYmYzYmQ1OCIsImVtYWlsIjoibG92ZGFubkBhbWF6b24uY29tIn0.JU9YNqnfWesEOxMaosLmhSnNbro5-aAQiskjRS3pEbcUrbeCXpjjlqxX81-yEqwfAlAkZfgX3c6mqbKA8aSD8pgJYkdGDujdc_c4FV0GVtvbOkYwUUgXZNq9cGF6tafBA7IWFXiDoWT2SrKuBR62s1Xb1T-T9CWQeU7sjNMoneB45HBXNqSuM7rC1f0BWtgm8gEPdUTQS2-UuackAxaPHcoA1OFeZ1seoulimZSwHSG-Q6m-zZNZHUgKccOESzdSJxFsZkTDs85IDIj9FBMcQchoUgMqA_w9XfvZEDfhWBOE06fLoPoO8UgyMAUa6cNFvqD1eZ-S9pumD7uRuBs4fA
 content-type
 application/json
 referer
@@ -17,5 +14,51 @@ sec-ch-ua-mobile
 ?0
 sec-ch-ua-platform
 "macOS"
+user-agent
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+
+
+
+
+Request URL
+https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list
+Request Method
+OPTIONS
+Status Code
+204 No Content
+Remote Address
+52.52.14.131:443
+Referrer Policy
+strict-origin-when-cross-origin
+:authority
+lf5waxgm3a.execute-api.us-west-1.amazonaws.com
+:method
+OPTIONS
+:path
+/prod/files/list
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+access-control-request-headers
+authorization,content-type
+access-control-request-method
+GET
+origin
+https://main.d28wvz3bs3pz1c.amplifyapp.com
+priority
+u=1, i
+referer
+https://main.d28wvz3bs3pz1c.amplifyapp.com/
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+cross-site
 user-agent
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
