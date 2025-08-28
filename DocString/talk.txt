@@ -1,18 +1,64 @@
-Access-Control-Allow-Origin
-https://main.d28wvz3bs3pz1c.amplifyapp.com/
+const ORIGIN = 'https://main.d28wvz3bs3pz1c.amplifyapp.com'; // no trailing slash
 
-https://main.d28wvz3bs3pz1c.amplifyapp.com
+export const handler = async (event) => {
+  try {
+    // ... your DynamoDB scan logic ...
 
-Access-Control-Allow-Headers
-authorization,content-type
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': ORIGIN,           // <= here
+        'Access-Control-Allow-Headers': 'Authorization,Content-Type'
+      },
+      body: JSON.stringify({ items })
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': ORIGIN,           // <= and here
+        'Access-Control-Allow-Headers': 'Authorization,Content-Type'
+      },
+      body: JSON.stringify({ error: 'Internal error', detail: String(err) })
+    };
+  }
+};
 
-Access-Control-Allow-Methods
-GET
 
-POST
 
-OPTIONS
 
-Access-Control-Expose-Headers
-content-disposition
+---------
+
+const ORIGIN = 'https://main.d28wvz3bs3pz1c.amplifyapp.com';
+
+export const handler = async (event) => {
+  try {
+    // ... your S3 presign logic ...
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': ORIGIN,
+        'Access-Control-Allow-Headers': 'Authorization,Content-Type'
+      },
+      body: JSON.stringify({ url, expiresIn, bucket: BUCKET_NAME, key })
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': ORIGIN,
+        'Access-Control-Allow-Headers': 'Authorization,Content-Type'
+      },
+      body: JSON.stringify({ error: 'Internal error', detail: String(err) })
+    };
+  }
+};
+
 
