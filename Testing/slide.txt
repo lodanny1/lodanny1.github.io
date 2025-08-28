@@ -1,0 +1,120 @@
+speech: 
+
+Upload Documents (end-to-end flow)
+1) User
+The user clicks Upload in your app and picks a file.
+The browser doesn’t send the file to your server; it asks for permission to upload directly to S3.
+2) Cloud
+“The cloud” here is your AWS stack working together: Amplify hosting, Cognito auth, API Gateway, Lambda, S3, EventBridge, Step Functions, and DynamoDB.
+The goal is zero custom servers to scale or patch.
+3) Amplify (Frontend Hosting)
+Hosts your React/Vite UI globally.
+The app calls your backend only to get a presigned URL; the large file goes straight to S3 from the browser (no bottleneck at your API).
+4) Cognito (Login & Tokens)
+User signs in via Hosted UI (Authorization Code + PKCE).
+Browser gets an ID token (JWT).
+Every call to your API carries Authorization: Bearer <JWT> so the backend knows who’s asking.
+6) IAM (Permissions)
+Frontend (browser) never has AWS credentials.
+Your Lambda roles have least-privilege:
+“Upload URL” Lambda: s3:PutObject (scoped to a prefix), maybe s3:AbortMultipartUpload, plus logs:*.
+“Router/Processor” Lambdas: read S3 object metadata, write to DynamoDB, start Step Functions.
+Step Functions role: states:StartExecution, invoke task Lambdas, write CloudWatch Logs.
+DynamoDB role: PutItem/UpdateItem/Query scoped to your table.
+7) API Gateway (Control Plane)
+Exposes an endpoint, e.g., POST /uploads/create.
+Uses a Cognito JWT authorizer to verify the token.
+On success, forwards to the “Upload URL” Lambda.
+8) Lambda (Create Presigned URL)
+Validates input (projectId, filename, size/type).
+Generates a presigned S3 PUT URL with tight conditions (content-length range, allowed Content-Type, short expiry).
+Optionally writes an initial DynamoDB record:
+status = "pending", fileId, projectId, key, contentType, requestedBy, requestedAt.
+Returns the URL + required headers to the browser.
+9) S3 Bucket (Data Plane)
+Browser uploads file directly to S3 with the presigned URL (multipart for large files).
+Bucket is private, Block Public Access on, TLS-only enforced, SSE-S3 (or KMS if you upgrade).
+S3 stores the object and emits an Object Created event.
+10) EventBridge (Event Router)
+S3 integrates with EventBridge; each object create shows up as an event.
+A rule filters for your bucket/prefix and routes to your processor entry point (Step Functions or a small “router” Lambda).
+11) Lambda (Router/Enricher – optional but useful)
+Reads the event, fetches S3 object metadata (size, versionId, content type).
+Optionally updates the DynamoDB item from pending → uploaded.
+Decides which state machine or branch to use (e.g., images vs PDFs).
+Starts a Step Functions execution with a clean, typed input payload.
+12) Step Functions (Orchestrator)
+Coordinates one or more Task states (Lambdas) to extract metadata. Typical outline:
+Choice on contentType (PDF/Image/CSV/etc.).
+Map/Parallel if multiple extractors run (EXIF + Rekognition labels, for example).
+Retry with backoff on transient errors; Catch routes to a failure handler (write error details to DDB + DLQ).
+Final Task writes a normalized metadata record to DynamoDB (status = "processed", checksums, pageCount, EXIF, labels, etc.).
+Emits Succeeded/Failed for monitoring and alerting.
+13) DynamoDB (System of Record)
+Holds one item per file (plus GSIs for list views):
+Keys like PK = fileId, SK = versionId (or projectId#fileKey pattern).
+Core attributes (projectId, key, contentType, size, checksum, versionId, createdAt, processedAt, status).
+Your “Your Documents” page reads from here (fast, scalable, low cost).
+Deep dive: Lambda (what to highlight in your speech)
+Roles in this system
+CreateUploadUrl Lambda (API-facing)
+Validates user input (defense-in-depth).
+Generates a short-lived presigned PUT.
+Writes/updates a DDB item to record intent (pending).
+Idempotency tip: deterministic fileId (e.g., UUID v4 from client) so re-tries don’t create duplicates.
+Router Lambda (Event-facing)
+Converts a raw S3 event into a clean Step Functions input (adds size, contentType, versionId).
+Decides which pipeline to run.
+Starts the Step Functions execution with a correlation ID (fileId#versionId).
+Extractor Lambdas (Task workers inside Step Functions)
+Small, single-responsibility functions (e.g., read EXIF; parse CSV header; run Rekognition/Textract).
+Idempotent by design: if they run twice for the same fileId#versionId, they produce the same result and guard writes with DynamoDB conditional expressions.
+Reliability patterns
+Timeouts & memory tuned per function (don’t leave defaults).
+Retries: Step Functions manages retries; Lambdas should return explicit errors for transient failures so retries kick in.
+DLQ or SQS-on-failure for post-mortem and manual replay.
+Cold starts: keep packages lean; avoid heavyweight init in the global scope.
+Deep dive: Step Functions (how to explain it clearly)
+What it is:
+A visual state machine that coordinates work. Instead of writing a 400-line “god Lambda,” you compose small steps with Choice, Map, Parallel, Task, Retry, and Catch.
+Why it matters:
+Observability: you see each execution, each step, inputs/outputs, and where errors happen.
+Correctness: built-in retries and error handling reduce partial failures.
+Scalability: it fans out safely (e.g., Map over pages or frames) with a MaxConcurrency cap.
+Typical metadata state machine (spoken outline):
+Validate Input (Task) → ensure bucket/key/version present.
+HeadObject (Task) → confirm size, contentType, checksum.
+Choice → branch by contentType:
+PDF branch: call a Lambda to read page count; optionally call Textract; merge results.
+Image branch: call EXIF Lambda; call Rekognition; merge results.
+CSV branch: stream header, infer columns/row count.
+Normalize (Task) → produce a single, compact metadata JSON.
+Write to DynamoDB (Task) with a conditional put on fileId#versionId (idempotent).
+Success; Catch → on any failure, write status="failed" plus errorReason, and (optionally) push to DLQ.
+Display Documents (list view)
+1) Amplify (Frontend)
+User is already logged in; UI calls your list endpoint with JWT.
+2) API Gateway
+Verifies the token via Cognito authorizer; throttles if needed.
+3) Lambda
+Validates query params (e.g., projectId, pagination token).
+Issues a DynamoDB Query against your GSI (e.g., GSI1: projectId + createdAt DESC).
+Returns a paged result (items + LastEvaluatedKey).
+4) DynamoDB
+Serves results at single-digit ms latencies; essentially unlimited scale.
+Keep items compact for cost/perf; avoid table scans.
+Download Documents
+Flow (control + data plane split):
+Amplify (Frontend) → calls POST /downloads/create with fileId (JWT attached).
+API Gateway → authorizes the request (Cognito).
+Lambda → looks up the file row in DynamoDB, checks caller access, generates a presigned GET URL (short expiry).
+Browser → S3 → downloads the object directly via that presigned URL (fast, no server bottleneck).
+Why this is great in a speech:
+Your API never streams big files. It only authorizes and signs. S3 does the heavy lifting.
+What to emphasize (talking points)
+Serverless scaling: “We don’t scale servers; we scale events. S3, DynamoDB, Lambda, and Step Functions scale automatically.”
+Security by design: “No public buckets, TLS-only, least-privilege IAM, short-lived presigned URLs, JWT-protected APIs.”
+Reliability: “Idempotent writes (fileId#versionId), Step Functions retries/Catch, DLQs, CloudWatch alarms.”
+Cost & performance: “Data goes straight to S3, not through our API. DynamoDB Query over GSI; no scans.”
+Extensibility: “Add a new file type = add a new Step Functions branch + a small Lambda—no rewrites.”
+If you want, I can tailor a 60–90 second script version you can read verbatim on stage, or a one-page diagram + notes you can hand out.
