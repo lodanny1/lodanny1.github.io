@@ -3,9 +3,9 @@ https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
 [
   {
-    "source": "</^((?!\.).)*$/>",
-    "status": "404-200",
+    "source": "</^((?!\\.).)*$/>",
     "target": "/index.html",
-    "type": "200 (Rewrite)"
+    "status": 200,
+    "condition": null
   }
 ]
