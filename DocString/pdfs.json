@@ -2,24 +2,33 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "UploadsWriteAndMultipart",
+      "Sid": "SinglePutAndDownload",
       "Effect": "Allow",
       "Action": [
         "s3:PutObject",
-        "s3:AbortMultipartUpload",
-        "s3:ListBucketMultipartUploads",
-        "s3:ListMultipartUploadParts"
+        "s3:GetObject"
       ],
-      "Resource": [
-        "arn:aws:s3:::severless-proj-uploads-251985477703-us-west-1/*",
-        "arn:aws:s3:::severless-proj-uploads-251985477703-us-west-1"
-      ]
+      "Resource": "arn:aws:s3:::severless-proj-uploads-251985477703-us-west-1/*"
     },
     {
-      "Sid": "DownloadsIfYouPresignGET",
+      "Sid": "MultipartOps",
       "Effect": "Allow",
-      "Action": ["s3:GetObject"],
+      "Action": [
+        "s3:CreateMultipartUpload",
+        "s3:UploadPart",
+        "s3:CompleteMultipartUpload",
+        "s3:AbortMultipartUpload",
+        "s3:ListMultipartUploadParts"
+      ],
       "Resource": "arn:aws:s3:::severless-proj-uploads-251985477703-us-west-1/*"
+    },
+    {
+      "Sid": "ListBucketForMultipart",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucketMultipartUploads"
+      ],
+      "Resource": "arn:aws:s3:::severless-proj-uploads-251985477703-us-west-1"
     }
   ]
 }
