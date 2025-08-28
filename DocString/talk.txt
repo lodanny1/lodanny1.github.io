@@ -1,20 +1,101 @@
-2025-08-28T05:49:31.753Z
-INIT_START Runtime Version: nodejs:20.v75 Runtime Version ARN: arn:aws:lambda:us-west-1::runtime:d53c0a42f621a9cdbeb669948900c5e72c52223c7fafbccddbf660c004cd5d35
-2025-08-28T05:49:31.895Z
-2025-08-28T05:49:31.895Z undefined ERROR (node:2) Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension. (Use `node --trace-warnings ...` to show where the warning was created)
-2025-08-28T05:49:31.898Z
-2025-08-28T05:49:31.898Z undefined ERROR Uncaught Exception {"errorType":"Runtime.UserCodeSyntaxError","errorMessage":"SyntaxError: Cannot use import statement outside a module","stack":["Runtime.UserCodeSyntaxError: SyntaxError: Cannot use import statement outside a module"," at _loadUserApp (file:///var/runtime/index.mjs:1106:17)"," at async UserFunction.js.module.exports.load (file:///var/runtime/index.mjs:1148:21)"," at async start (file:///var/runtime/index.mjs:1335:23)"," at async file:///var/runtime/index.mjs:1342:1"]}
-2025-08-28T05:49:31.920Z
-INIT_REPORT Init Duration: 167.29 ms Phase: init Status: error Error Type: Runtime.UserCodeSyntaxError
-2025-08-28T05:49:32.009Z
-2025-08-28T05:49:32.009Z undefined ERROR (node:2) Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension. (Use `node --trace-warnings ...` to show where the warning was created)
-2025-08-28T05:49:32.011Z
-2025-08-28T05:49:32.011Z undefined ERROR Uncaught Exception {"errorType":"Runtime.UserCodeSyntaxError","errorMessage":"SyntaxError: Cannot use import statement outside a module","stack":["Runtime.UserCodeSyntaxError: SyntaxError: Cannot use import statement outside a module"," at _loadUserApp (file:///var/runtime/index.mjs:1106:17)"," at async UserFunction.js.module.exports.load (file:///var/runtime/index.mjs:1148:21)"," at async start (file:///var/runtime/index.mjs:1335:23)"," at async file:///var/runtime/index.mjs:1342:1"]}
-2025-08-28T05:49:32.032Z
-INIT_REPORT Init Duration: 98.86 ms Phase: invoke Status: error Error Type: Runtime.UserCodeSyntaxError
-2025-08-28T05:49:32.032Z
-START RequestId: 50387b4c-dd88-448d-99d4-21ec4e683182 Version: $LATEST
-2025-08-28T05:49:32.037Z
-END RequestId: 50387b4c-dd88-448d-99d4-21ec4e683182
-2025-08-28T05:49:32.037Z
-REPORT RequestId: 50387b4c-dd88-448d-99d4-21ec4e683182 Duration: 108.11 ms Billed Duration: 109 ms Memory S
+// index.js (CommonJS)
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
+  marshallOptions: { removeUndefinedValues: true }
+});
+
+const TABLE  = process.env.TABLE_NAME;
+const BUCKET = process.env.BUCKET_NAME;
+const ORIGIN = process.env.ORIGIN || "*";
+const allowedOrigins = new Set([ORIGIN, "http://localhost:5173"]);
+
+function corsHeaders(event){
+  const h = (event && event.headers) || {};
+  const reqOrigin = h.origin || h.Origin;
+  const allow = allowedOrigins.has(reqOrigin) ? reqOrigin : ORIGIN;
+  return {
+    "Content-Type":"application/json",
+    "Access-Control-Allow-Origin": allow,
+    "Access-Control-Allow-Headers":"Authorization,Content-Type"
+  };
+}
+
+exports.handler = async (event) => {
+  try{
+    const qs = (event && event.queryStringParameters) || {};
+    const prefix = typeof qs.prefix === "string" ? qs.prefix : "";
+    const limit  = Math.min(Number(qs.limit || 200), 500);
+
+    const res = await ddb.send(new ScanCommand({ TableName: TABLE, Limit: limit }));
+    const items = (res.Items || [])
+      .filter(it => it.bucket === BUCKET)
+      .filter(it => typeof it.key === "string")
+      .filter(it => prefix ? it.key.startsWith(prefix) : true)
+      .filter(it => typeof it.contentType === "string" ? !it.contentType.includes("x-directory") : true)
+      .filter(it => typeof it.size === "number" ? it.size > 0 : true)
+      .map(it => ({
+        key: it.key,
+        bucket: it.bucket,
+        size: typeof it.size === "number" ? it.size : null,
+        contentType: it.contentType || null,
+        status: it.status || null,
+        processedAt: it.processedAt || null
+      }))
+      .sort((a,b) => String(b.processedAt||"").localeCompare(String(a.processedAt||"")));
+
+    return { statusCode:200, headers:corsHeaders(event), body: JSON.stringify({ items }) };
+  }catch(err){
+    console.error("ERROR", err);
+    return { statusCode:500, headers:corsHeaders(event), body: JSON.stringify({ error:"Internal error", detail:String(err) }) };
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+// index.js (CommonJS)
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const s3 = new S3Client({});
+const BUCKET  = process.env.BUCKET_NAME;
+const EXPIRES = Number(process.env.URL_EXPIRES_SEC || 900);
+const ORIGIN  = process.env.ORIGIN || "*";
+const allowedOrigins = new Set([ORIGIN, "http://localhost:5173"]);
+
+function corsHeaders(event){
+  const h = (event && event.headers) || {};
+  const reqOrigin = h.origin || h.Origin;
+  const allow = allowedOrigins.has(reqOrigin) ? reqOrigin : ORIGIN;
+  return {
+    "Content-Type":"application/json",
+    "Access-Control-Allow-Origin": allow,
+    "Access-Control-Allow-Headers":"Authorization,Content-Type"
+  };
+}
+
+exports.handler = async (event) => {
+  try{
+    const body = event.body ? JSON.parse(event.body) : {};
+    const key  = body && body.key;
+    if(!key || typeof key !== "string"){
+      return { statusCode:400, headers:corsHeaders(event), body: JSON.stringify({ error: "Body must include { key: '<s3-object-key>' }" }) };
+    }
+    const url = await getSignedUrl(s3, new GetObjectCommand({ Bucket: BUCKET, Key: key }), { expiresIn: EXPIRES });
+    return { statusCode:200, headers:corsHeaders(event), body: JSON.stringify({ url, expiresIn:EXPIRES, bucket:BUCKET, key }) };
+  }catch(err){
+    console.error("ERROR", err);
+    return { statusCode:500, headers:corsHeaders(event), body: JSON.stringify({ error:"Internal error", detail:String(err) }) };
+  }
+};
+
