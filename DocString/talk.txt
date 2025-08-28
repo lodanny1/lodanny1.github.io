@@ -1,35 +1,6 @@
-Request URL
-https://lf5waxgm3a.execute-api.us-west-1.amazonaws.com/prod/files/list
-Referrer Policy
-strict-origin-when-cross-origin
-authorization
-Bearer eyJraWQiOiJEXC9KOHFnRGt1eW93dzhDMkcyblpIUWhIeDQ1eTZrMnhURTVIUytPdWVlND0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiTG1GT0UxalluTDI1Y04ycUlKQTRBdyIsInN1YiI6ImQ5NzkzOTRlLWMwMDEtNzBjNi1jMTlmLWJlNjdlODhmNGE2NyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0xLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMV9udkVvQVRmTGciLCJjb2duaXRvOnVzZXJuYW1lIjoiZDk3OTM5NGUtYzAwMS03MGM2LWMxOWYtYmU2N2U4OGY0YTY3Iiwib3JpZ2luX2p0aSI6ImVhMjQwMWI1LTY1YWEtNGQ3Ni1hMzgxLTRkOWJjZjkyNWVhYiIsImF1ZCI6IjQ0OWlvZGgyaHVrdmN0ZWo5dnV1cGZrbXYiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTc1NjM1Njc3NCwiZXhwIjoxNzU2MzYwMzc0LCJpYXQiOjE3NTYzNTY3NzQsImp0aSI6IjhjYmE0NDEwLTM1NDYtNDg2Ny05NGVkLTIxNzc5NDlkZGE0YiIsImVtYWlsIjoibG92ZGFubkBhbWF6b24uY29tIn0.Hjr94vggZKgkc98TasNNmAfZsbginKCyPsdJSNzyYofJzmik3TT8mMfpUUMwMJuQpMj818QgLWarwVJPT83aUOvKsHZALPffCt50MR_vMQxKa1EJjH4mBgs1KGPwj4QS7VH0u4RGiZlcPAYc3u9HLOSA7Vpc2gZMeAtKJxrp1DL_PyCxDkSVEeV75EGSQAZxujR1-p4hTob8XuDLeiMhGR9dh_7alIiXd74P8thjnXeEvvpg1ZUi3-UegIGYogNAuTGyL90v90Mva4ZbFcr5S6NILpNtFKhZDQJnFXivB4ay71_c0i3KJlhbGfbbFk_l8iyY1DMR7RZeiRrSBqG4ug
-content-type
-application/json
-referer
-https://main.d28wvz3bs3pz1c.amplifyapp.com/
-sec-ch-ua
-"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile
-?0
-sec-ch-ua-platform
-"macOS"
-user-agent
-Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
-
-
-
-
-Request call stack
-_m	@	index-DX1rdoGz.js:67
-f	@	index-DX1rdoGz.js:67
-(anonymous)	@	index-DX1rdoGz.js:67
-Bi	@	index-DX1rdoGz.js:40
-wn	@	index-DX1rdoGz.js:40
-(anonymous)	@	index-DX1rdoGz.js:40
-w	@	index-DX1rdoGz.js:25
-_e	@	index-DX1rdoGz.js:25
-Request initiator chain
-https://main.d28wvz3bs3pz1c.amplifyapp.com/app/files
-https://main.d28wvz3bs3pz1c.amplifyapp.com/assets/index-DX1rdoGz.js
-https://lf5waxgm3a.execute-api.us-west-1.am
+/downloads
+/create
+ANY
+/files
+/list
+GET
