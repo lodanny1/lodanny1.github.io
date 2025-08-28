@@ -1,12 +1,18 @@
-Ensure CORS response header values are valid
-A cross-origin resource sharing (CORS) request was blocked because of invalid or missing response headers of the request or the associated preflight request.
+Access-Control-Allow-Origin
+https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
-To fix this issue, ensure the response to the CORS request and/or the associated preflight request are not missing headers and use valid header values.
+https://main.d28wvz3bs3pz1c.amplifyapp.com
 
-Note that if an opaque response is sufficient, the request's mode can be set to no-cors to fetch the resource with CORS disabled; that way CORS headers are not required but the response content is inaccessible (opaque).
+Access-Control-Allow-Headers
+authorization,content-type
 
-1 request
-Request	Status	Preflight Request (if problematic)	Header	Problem	Invalid Value (if available)
+Access-Control-Allow-Methods
+GET
 
-list	blocked	
-list	Access-Control-Allow-Origin	Missing Header	
+POST
+
+OPTIONS
+
+Access-Control-Expose-Headers
+content-disposition
+
