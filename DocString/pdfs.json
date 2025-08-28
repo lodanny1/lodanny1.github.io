@@ -1,23 +1,12 @@
-<CORSConfiguration>
-  <CORSRule>
-    <AllowedOrigin>https://main.d28wvz3bs3pz1c.amplifyapp.com</AllowedOrigin>
-    <AllowedMethod>PUT</AllowedMethod>
-    <AllowedMethod>GET</AllowedMethod>
-    <AllowedMethod>HEAD</AllowedMethod>
-    <AllowedHeader>*</AllowedHeader>
-    <ExposeHeader>ETag</ExposeHeader>
-    <MaxAgeSeconds>3000</MaxAgeSeconds>
-  </CORSRule>
-  <!-- Optional: local dev -->
-  <!--
-  <CORSRule>
-    <AllowedOrigin>http://localhost:5173</AllowedOrigin>
-    <AllowedMethod>PUT</AllowedMethod>
-    <AllowedMethod>GET</AllowedMethod>
-    <AllowedMethod>HEAD</AllowedMethod>
-    <AllowedHeader>*</AllowedHeader>
-    <ExposeHeader>ETag</ExposeHeader>
-    <MaxAgeSeconds>3000</MaxAgeSeconds>
-  </CORSRule>
-  -->
-</CORSConfiguration>
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
+      "AllowedMethods": ["PUT", "GET", "HEAD"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["ETag"],
+      "MaxAgeSeconds": 3000
+    }
+    /* , { "AllowedOrigins": ["http://localhost:5173"], "AllowedMethods": ["PUT","GET","HEAD"], "AllowedHeaders":["*"], "ExposeHeaders":["ETag"], "MaxAgeSeconds":3000 } */
+  ]
+}
