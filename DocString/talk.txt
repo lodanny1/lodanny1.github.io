@@ -1,1 +1,12 @@
 https://main.d28wvz3bs3pz1c.amplifyapp.com/
+
+
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    { "Effect": "Allow", "Action": ["dynamodb:Query","dynamodb:Scan","dynamodb:GetItem"], "Resource": "arn:aws:dynamodb:us-west-1:<ACCOUNT_ID>:table/<DDB_TABLE_NAME>" },
+    { "Effect": "Allow", "Action": ["s3:GetObject"], "Resource": "arn:aws:s3:::<BUCKET_NAME>/*" }
+  ]
+}
+
