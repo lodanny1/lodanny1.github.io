@@ -1,11 +1,109 @@
-{
-  "CORSRules": [
-    {
-      "AllowedOrigins": ["https://main.d28wvz3bs3pz1c.amplifyapp.com"],
-      "AllowedMethods": ["PUT", "GET", "HEAD"],
-      "AllowedHeaders": ["*"],
-      "ExposeHeaders": ["ETag"],
-      "MaxAgeSeconds": 3000
-    }
-  ]
-}
+30
+
+                                 ## No backend environment association found, continuing...
+
+31
+
+                                 ## Completed Backend Build
+
+32
+
+2025-08-28T07:56:30.732Z [INFO]: {"backendDuration": 0}
+
+33
+
+                                 ## Starting Frontend Build
+
+34
+
+                                 # Starting phase: preBuild
+
+35
+
+                                 # Executing command: node -v
+
+36
+
+2025-08-28T07:56:30.739Z [INFO]: v18.20.8
+
+37
+
+                                 # Executing command: npm install --no-audit --no-fund
+
+38
+
+2025-08-28T07:56:45.242Z [INFO]: up to date in 11s
+
+39
+
+2025-08-28T07:56:45.253Z [INFO]: # Completed phase: preBuild
+
+40
+
+                                 # Starting phase: build
+
+41
+
+                                 # Executing command: npm run build
+
+42
+
+2025-08-28T07:56:45.371Z [INFO]: > serverless-metadata-ui@0.0.1 build
+
+43
+
+                                 > vite build
+
+44
+
+2025-08-28T07:56:46.109Z [INFO]: vite v5.4.19 building for production...
+
+45
+
+2025-08-28T07:56:46.174Z [INFO]: transforming...
+
+46
+
+2025-08-28T07:56:46.365Z [INFO]: ✓ 9 modules transformed.
+
+47
+
+2025-08-28T07:56:46.367Z [WARNING]: x Build failed in 229ms
+
+48
+
+2025-08-28T07:56:46.367Z [WARNING]: error during build:
+
+49
+
+                                    [vite:esbuild] Transform failed with 1 error:
+
+50
+
+                                    /codebuild/output/src4100674608/src/serverless_proj_oidc/src/screens/Files.jsx:1:2: ERROR: Unexpected "}"
+
+51
+
+                                    file: /codebuild/output/src4100674608/src/serverless_proj_oidc/src/screens/Files.jsx:1:2
+
+52
+
+                                    Unexpected "}"
+
+53
+
+                                    1  |    }
+
+54
+
+                                    |    ^
+
+55
+
+                                    2  |    function closeUploader(){
+
+56
+
+                                    3  |      setShowUploader(false)
+
+
