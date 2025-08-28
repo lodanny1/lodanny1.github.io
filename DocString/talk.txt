@@ -1,12 +1,127 @@
 https://main.d28wvz3bs3pz1c.amplifyapp.com/
 
 
+// index.mjs (Node.js 20)
+import { DynamoDBClient, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    { "Effect": "Allow", "Action": ["dynamodb:Query","dynamodb:Scan","dynamodb:GetItem"], "Resource": "arn:aws:dynamodb:us-west-1:<ACCOUNT_ID>:table/<DDB_TABLE_NAME>" },
-    { "Effect": "Allow", "Action": ["s3:GetObject"], "Resource": "arn:aws:s3:::<BUCKET_NAME>/*" }
-  ]
-}
+const ddb = new DynamoDBClient({});
+
+/**
+ * Expected querystring:
+ *   - projectId (optional): filter by partition key if your table is PK=projectId
+ */
+export const handler = async (event) => {
+  try {
+    const table = process.env.TABLE_NAME;
+    const qs = event.queryStringParameters || {};
+    const projectId = qs.projectId;
+
+    let cmd;
+    if (projectId) {
+      // If your table has PK = "projectId"
+      cmd = new QueryCommand({
+        TableName: table,
+        KeyConditionExpression: "#p = :pid",
+        ExpressionAttributeNames: { "#p": "projectId" },
+        ExpressionAttributeValues: { ":pid": { S: projectId } }
+      });
+    } else {
+      // fallback: scan (for PoC/demo)
+      cmd = new ScanCommand({ TableName: table, Limit: 100 });
+    }
+
+    const res = await ddb.send(cmd);
+
+    // flatten items (simple map for common attribute types)
+    const items = (res.Items || []).map((it) => {
+      const out = {};
+      for (const [k, v] of Object.entries(it)) {
+        // unwrap DynamoDB AttributeValue shapes (S, N, BOOL, etc.)
+        if ("S" in v) out[k] = v.S;
+        else if ("N" in v) out[k] = Number(v.N);
+        else if ("BOOL" in v) out[k] = v.BOOL;
+        else out[k] = v; // leave raw if complex (SS, M...)
+      }
+      return out;
+    });
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ items })
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ error: "Internal error", detail: String(err) })
+    };
+  }
+};
+
+
+
+
+
+-------
+
+
+// index.mjs (Node.js 20)
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const s3 = new S3Client({});
+
+export const handler = async (event) => {
+  try {
+    const { BUCKET_NAME, URL_EXPIRES_SEC } = process.env;
+    const expiresIn = Number(URL_EXPIRES_SEC || 900);
+
+    const body = event.body ? JSON.parse(event.body) : {};
+    // Accept either 'key' (full key) or parts { projectId, customerName, ext }
+    let { key, projectId, customerName, ext } = body;
+
+    if (!key) {
+      if (!projectId || !customerName || !ext) {
+        return {
+          statusCode: 400,
+          headers: { "Access-Control-Allow-Origin": "*" },
+          body: JSON.stringify({ error: "Provide 'key' or {projectId, customerName, ext}" })
+        };
+      }
+      key = `${projectId}_${customerName}.${ext}`;
+    }
+
+    // Optionally: enforce authorization based on claims in event.requestContext.authorizer.jwt.claims
+
+    const cmd = new GetObjectCommand({ Bucket: BUCKET_NAME, Key: key });
+    const url = await getSignedUrl(s3, cmd, { expiresIn });
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ url, expiresIn })
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({ error: "Internal error", detail: String(err) })
+    };
+  }
+};
 
